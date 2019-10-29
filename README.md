@@ -1,68 +1,116 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+## 1. 安装antd
 
-### `npm start`
+### `npm install antd --save`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 2. 引入样式以及组件
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### 
+```
+import { Input,Button,List } from 'antd'
+import 'antd/dist/antd.css'
+```
 
-### `npm test`
+## 3. 安装redux
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `npm i --save redux`
 
-### `npm run build`
+## 4. 首先创建store文件夹,建立index.js(相当于图书馆的角色)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 
+```
+import { createStore } from 'redux'
+const store = createStore()
+export default store
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## 5. 创建reducer.js(reducer相当于图书管理员的角色)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 
+```
+const defaultState = {}
+export default (state = defaultState, action) => {
+    return state
+}
+```
 
-### `npm run eject`
+## 6. store中index.js中注入reducer
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+import { createStore } from 'redux'
+import reducer from './reducer'
+const store = createStore(reducer) //reducer注入
+export default store
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 7. TodoList.js中引入store下的index.js,通过store.getState获取到reducer.js下返回的state
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+this.state = store.getState()
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 8. 安装Redux DevTool(Chrome商店)
 
-## Learn More
+## 9. TodoList中,input值发生变化,定义action(有两个值,一个是type[这个值自定义],一个是value[把变化的值赋给value]),通过store.dispatch(action),store会把action给reducer,这样在reducer.js中可以获取到action
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+  changeInputValue(e) {
+        const action = {
+            type: 'changeValue',
+            value: e.target.value
+        }
+        store.dispatch(action)
+    }
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+## 10. reducer.js(这里可以获取到store.dispatch(action)中的action。通过action.type来判断,获取到最新的value值并进行返回)
+注意：reducer里只能接受state,不能修改state,所以需要对state进行深拷贝
 
-### Code Splitting
+```
+export default (state = defaultState, action) => {
+    console.log(state, action)
+    //reducer里只能接受state,不能修改state
+    if (action.type === 'changeValue') {
+        let newState = JSON.parse(JSON.stringify(state))
+        newState.inputValue = action.value
+        return newState
+    }
+    return state
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## 11. 存在问题1:当action type比较多时,写错了控制代码没有报错<br>
+## 存在问题2:复用性不高 <br>
+## 解决方案:建立actionTypes.js文件,用的时候直接用变量
+```
+export const CHANGE_VALUE = 'changeValue'
+export const ADD_ITEM = 'addItem'
+export const DELETE_ITEM = 'deleteItem'
+```
 
-### Analyzing the Bundle Size
+## 12.存在问题3:一个组件中,action定义的地方很多
+## 解决方案:建立actionCreators.js
+```
+import { CHANGE_VALUE, ADD_ITEM, DELETE_ITEM } from './actionTypes'
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+export const changeInputAction = (value) => ({
+    type: CHANGE_VALUE,
+    value
+})
 
-### Making a Progressive Web App
+export const addItemAction = () => ({
+    type: ADD_ITEM
+})
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+export const deleteItemAction = (index) => ({
+    type: DELETE_ITEM,
+    index
+})
 
-### Advanced Configuration
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## 13. 注意！！！
+store必须唯一 <br>
+只有store可以更改state,Reducer不可以 <br>
+Reducer必须是纯函数 (不能用'1'或者new Date()来直接赋值,必须由传递的参数来决定,也不能直接在reducer中使用ajax请求)
