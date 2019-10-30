@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import store from './store'
 import TodoListUI from './TodoListUI'
-import { changeInputAction, addItemAction, deleteItemAction} from './store/actionCreators'
+import { changeInputAction, addItemAction, deleteItemAction, getListAction} from './store/actionCreators'
+import axios from 'axios'
 
 class TodoList extends Component {
     constructor(props) {
@@ -23,6 +24,14 @@ class TodoList extends Component {
                 deleteItem={this.deleteItem}
             />
         );
+    }
+    componentDidMount() {
+        axios.get('https://www.easy-mock.com/mock/5cf8da0af595656092d12a91/example/getStudyList')
+            .then((res) => {
+                console.log(res.data)
+                const action = getListAction(res.data)
+                store.dispatch(action)
+             })
     }
     /* 组件更新 */
     storeChange() {

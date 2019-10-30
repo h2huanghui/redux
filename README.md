@@ -121,4 +121,7 @@ TodoListUI.js
 ## 无状态组件(其实就是一个函数)
 对于纯UI,没有业务逻辑的组件可以不用改造成无状态组件。不用引入从react引入{Component} 不需要引入state,从而提高性能
 
+## axios实际在react使用,结合redux
+`npm i --save axios`
+
 
