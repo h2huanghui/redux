@@ -1,4 +1,4 @@
-import { CHANGE_VALUE, ADD_ITEM, DELETE_ITEM, GET_LIST } from './actionTypes'
+import { CHANGE_VALUE, ADD_ITEM, DELETE_ITEM, GET_LIST, GET_MY_LIST } from './actionTypes'
 import axios from 'axios'
 
 export const changeInputAction = (value) => ({
@@ -25,9 +25,12 @@ export const getTodoList = () => {
         axios.get('https://www.easy-mock.com/mock/5cf8da0af595656092d12a91/example/getStudyList')
             .then((res) => {
                 const data = res.data
-                console.log(data)
                 const action = getListAction(data)
                 dispatch(action)
             })
     }
 }
+
+export const getMyListAction = () => ({
+    type: GET_MY_LIST
+})
