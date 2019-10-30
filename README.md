@@ -124,4 +124,13 @@ TodoListUI.js
 ## axios实际在react使用,结合redux
 `npm i --save axios`
 
+## redux中间件  Redux-thunk  主要用来日志记录 崩溃报告
+把异步放到中间件去写
+`npm i --save redux-thunk`
+
+## redux-thunk 配置
+
+redux中的createStore方法只能传递两个参数,但是需要用两个中间件,所以需要自己做一个增强函数。(增强函数可以理解为链式函数,执行完一个函数,再执行一个;写一个方法,执行两个函数) <br>
+redux提供了做增强函数的compose
+
 

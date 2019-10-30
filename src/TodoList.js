@@ -28,7 +28,6 @@ class TodoList extends Component {
     componentDidMount() {
         axios.get('https://www.easy-mock.com/mock/5cf8da0af595656092d12a91/example/getStudyList')
             .then((res) => {
-                console.log(res.data)
                 const action = getListAction(res.data)
                 store.dispatch(action)
              })
