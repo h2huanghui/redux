@@ -133,4 +133,6 @@ TodoListUI.js
 redux中的createStore方法只能传递两个参数,但是需要用两个中间件,所以需要自己做一个增强函数。(增强函数可以理解为链式函数,执行完一个函数,再执行一个;写一个方法,执行两个函数) <br>
 redux提供了做增强函数的compose
 
+## redux-thunk 使用
+使用redux-thunk,actionCreators.js中不是返回一个对象,而是返回一个函数
 
