@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Input,Button,List } from 'antd'
-import 'antd/dist/antd.css'
 import store from './store'
-// import { CHANGE_VALUE, ADD_ITEM, DELETE_ITEM } from './store/actionTypes'
+import TodoListUI from './TodoListUI'
 import { changeInputAction, addItemAction, deleteItemAction} from './store/actionCreators'
 
 class TodoList extends Component {
@@ -11,32 +9,19 @@ class TodoList extends Component {
         this.state = store.getState()
         this.changeInputValue = this.changeInputValue.bind(this)
         this.handleClick = this.handleClick.bind(this)
-        // this.deleteItem = this.deleteItem.bind(this)
+        this.deleteItem = this.deleteItem.bind(this)
         this.storeChange = this.storeChange.bind(this)
         store.subscribe(this.storeChange) //订阅之后,state发生变化了,调用方法,使组件更新
     }
     render() { 
         return (  
-            <div style={{margin:'10px'}}>
-                <div>
-                    <Input
-                        placeholder={this.state.inputValue}
-                        style={{ width: '250px', marginRight: '10px' }}
-                        onChange={this.changeInputValue}
-                        value={this.state.inputValue}
-                    />
-                    <Button type='primary' onClick={this.handleClick}>Add</Button>
-                </div>
-                <div style={{margin:'10px 10px 10px 0',width:'300px'}}>
-                    <List
-                        bordered
-                        size='small'
-                        dataSource={this.state.list}
-                        renderItem={(item,index) => <List.Item onClick={this.deleteItem.bind(this,index)}>{item}</List.Item>}
-                        
-                    />
-                </div>
-            </div>
+            <TodoListUI
+                inputValue={this.state.inputValue}
+                changeInputValue={this.changeInputValue}
+                handleClick={this.handleClick}
+                list={this.state.list}
+                deleteItem={this.deleteItem}
+            />
         );
     }
     /* 组件更新 */

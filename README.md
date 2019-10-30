@@ -114,3 +114,11 @@ export const deleteItemAction = (index) => ({
 store必须唯一 <br>
 只有store可以更改state,Reducer不可以 <br>
 Reducer必须是纯函数 (不能用'1'或者new Date()来直接赋值,必须由传递的参数来决定,也不能直接在reducer中使用ajax请求)
+
+## 代码优化：UI和业务抽离
+TodoListUI.js
+
+## 无状态组件(其实就是一个函数)
+对于纯UI,没有业务逻辑的组件可以不用改造成无状态组件。不用引入从react引入{Component} 不需要引入state,从而提高性能
+
+
