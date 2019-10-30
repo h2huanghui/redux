@@ -25,8 +25,8 @@ class TodoList extends Component {
         );
     }
     componentDidMount() {
-        const action = getTodoList()
-        store.dispatch(action)
+        // const action = getTodoList()
+        // store.dispatch(action)
     }
     /* 组件更新 */
     storeChange() {

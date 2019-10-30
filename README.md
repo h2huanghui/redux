@@ -136,3 +136,6 @@ redux提供了做增强函数的compose
 ## redux-thunk 使用
 使用redux-thunk,actionCreators.js中不是返回一个对象,而是返回一个函数
 
+## redux-saga 配置
+`npm i --save redux-saga`
+
